@@ -1,0 +1,415 @@
+\documentclass[10pt]{beamer}
+
+\usefonttheme{professionalfonts}% use own font handling
+\usetheme{m}
+
+\usepackage{ulem}
+\usepackage{turnstile}
+\usepackage{proof}
+\usepackage{booktabs}
+\usepackage[scale=2]{ccicons}
+\usepackage{amsmath, stmaryrd, scalerel}
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{proof}
+\usepackage{supertabular}
+\usepackage{unicode-math}
+\usepackage{xltxtra}
+\usepackage{xunicode}
+\setmathfont{Asana Math}
+
+\definecolor{MidnightBlue}{rgb}{0.1, 0.1, 0.44}
+\definecolor{Maroon}{rgb}{0.5, 0.0, 0.0}
+
+% colors
+\def\InputModeColorName{MidnightBlue}
+\def\OutputModeColorName{Maroon}
+
+% modes
+\newcommand\IMode[1]{{\color{\InputModeColorName}{#1}}}
+\newcommand\OMode[1]{{\color{\OutputModeColorName}{#1}}}
+
+% judgments
+\newcommand\GenJ[2]{%
+  \vert_{\IMode{#1}}\; #2
+}
+\newcommand\HypJ[2]{%
+  #1\ \left(#2\right)
+}
+
+\newcommand\Meaning[1]{\left\llbracket\textit{#1}\right\rrbracket}
+\newcommand\VertSem[2]{%
+  \begin{array}{c}%
+    \Meaning{\IMode{#1}}\\%
+    \bigtriangledown\\%
+    \OMode{#2}%
+  \end{array}%
+}
+
+\newcommand\Force[3]{
+   \IMode{#1}%
+   \sdtstile{\IMode{#2}}{}%
+   #3
+}
+
+\newcommand\Eval[2]{\IMode{#1}\Downarrow\OMode{#2}}
+\newcommand\VertEval[2]{
+  \begin{array}{c}%
+    \IMode{#1}\\%
+    \Downarrow\\%
+    \OMode{#2}%
+  \end{array}%
+}
+\newcommand\Seq[2]{\IMode{#1}\vdash\IMode{#2}}
+\newcommand\Member[2]{\IMode{#1}\in\IMode{#2}}
+\newcommand\EqMember[3]{\IMode{#1}=\IMode{#2}\in\IMode{#3}}
+\newcommand\IsType[1]{\IMode{#1}\ \mathit{type}}
+\newcommand\EqType[2]{\IMode{#1}=\IMode{#2}\ \mathit{type}}
+\newcommand\IsTrue[1]{\IMode{#1}\ \mathit{true}}
+\newcommand\OpSig[2]{\IMode{#1} : \OMode{#2}}
+\newcommand\NotationDef[2]{\IMode{#1} \eqdef \OMode{#2}}
+\newcommand\Match[2]{\IMode{#1}=\OMode{#2}}
+\newcommand\MatchAlign[2]{\IMode{#1}&=\OMode{#2}}
+\newcommand\Size[1]{\left\vert#1\right\vert}
+\newcommand\IsLessThan[2]{\IMode{#1}<\IMode{#2}}
+
+\newcommand\Model[1]{\mathcal{M}_{#1}}
+
+% expressions
+\newcommand\TyEnt{\mathbb{E}}
+\newcommand\TyFun[3]{(\Pi #2\in #1)\, #3}
+\newcommand\TyImp[2]{#1\supset #2}
+\newcommand\TyProd[3]{(\Sigma #2\in #1)\, #3}
+\newcommand\TySet[3]{\{#2: #1\mid #3\}}
+\newcommand\TySetSimple[2]{\{#1\mid #2\}}
+\newcommand\Proj[1]{\pi_{#1}}
+\newcommand\OpRequire{\mathbf{require}}
+\newcommand\Require[3]{\OpRequire\ #2:#1\ \mathbf{in}\ #3}
+\newcommand\Head[1]{\mathsf{hd}(#1)}
+\newcommand\Tail[1]{\mathsf{tl}(#1)}
+
+\newcommand\BKS[1]{\varkappa_{#1}}
+\newcommand\Nil{\langle\rangle}
+\newcommand\Spw{\mathfrak{S}}
+\newcommand\Lawful[1]{\Spw(\IMode{#1})}
+
+\title{oracles and choice sequences for type-theoretic pragmatics}
+\date{October 8, 2015}
+\institute{joint work with Darryl McAdams}
+\author{Jon Sterling}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\begin{frame}{natural language semantics and anaphora}
+  \pause
+  \[
+    \VertSem{A man walked in.}{
+      \pause
+      \TyProd{Man}{p}{\pause WalkedIn(p)}
+    }
+  \]
+\end{frame}
+
+\begin{frame}{natural language semantics and anaphora}
+  \[
+    \VertSem{He sat down}{
+      \pause
+      SatDown(???)
+    }
+  \]
+\end{frame}
+
+\begin{frame}{natural language semantics and anaphora}
+  \[
+    \VertSem{A man walked in. He sat down}{
+      \pause
+      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{
+        \pause
+        SatDown(???)
+      }
+    }
+  \]
+\end{frame}
+
+\begin{frame}{natural language semantics and anaphora}
+  \[
+    \VertSem{A man walked in. He sat down}{
+      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{
+        SatDown(\Proj{1}(x))
+      }
+    }
+  \]
+\end{frame}
+
+\begin{frame}{the ``donkey sentence''}
+  \[
+    \VertSem{Every farmer who owns a donkey beats it.}{
+      \TyFun{
+        \TyProd{Farmer}{x}{
+          \TyProd{Donkey}{y}{
+            Owns(x;y)
+          }
+        }
+      }{p}{
+        \pause
+        Beats(\only<2>{???;???}\only<3>{\Proj{1}(p);\Proj{2}(p)})
+      }
+    }
+  \]
+\end{frame}
+
+\begin{frame}{two things to deal with}
+  \pause
+  \begin{itemize}[<+->]
+    \item \alert<4-5>{terms for presuppositions}\only<5>{ (this talk)}
+    \item resolution of presuppositions
+  \end{itemize}
+\end{frame}
+
+\section{the $\OpRequire$ oracle: statics}
+
+\begin{frame}{$\OpRequire$ --- formal rules}
+  \pause
+
+  \begin{gather*}
+    \OpSig{\OpRequire}{(0;1)}\tag{operator}\\
+    \NotationDef{\Require{A}{x}{N}}{\OpRequire(A; x.N)}\tag{notation}
+  \end{gather*}
+  \pause
+  \[
+    \infer{
+      \Seq{\Gamma}{\Member{\Require{A}{x}{N}}{B}}
+    }{
+      \Seq{\Gamma}{\IsType{A}} &
+      \Seq{\Gamma,x:A}{\Member{N}{B}}
+    }\tag{\textit{require}}
+  \]
+\end{frame}
+
+\begin{frame}{$\OpRequire$ --- examples}
+  \[
+    \VertSem{A man walked in. He sat down}{
+      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{
+        \only<1>{SatDown(???)}%
+        \only<2>{\Require{Man}{y}{SatDown(y)}}%
+      }
+    }
+  \]
+\end{frame}
+
+\begin{frame}{revising montague's program}
+  \only<1>{
+    The meaning of a sentence is a logical proposition.
+  }
+  \only<2->{
+    \sout{The meaning of a sentence is a logical proposition.}
+  }
+
+  \only<3->{
+    \alert<4->{The meaning of a sentence is a type-theoretic expression which may
+    \emph{evaluate} to a canonical proposition.}
+  }
+
+  \only<5->{
+    \textbf{What we want:}
+    \begin{gather*}
+      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{\Require{Man}{y}{SatDown(y)}}\\
+      \sim\\
+      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{\Proj{1}(x)}
+    \end{gather*}
+  }
+
+  \only<6->{
+    \centering
+    \framebox{
+      where
+      $\IMode{M\sim N} \eqdef
+       \OMode{(M\preceq N)\land(N\preceq M)}$
+    }
+  }
+\end{frame}
+
+\begin{frame}{Every grammatical sentence has a meaning}
+  \pause
+  ...but only some of them denote propositions (types)!
+\end{frame}
+
+\begin{frame}{a negative example}
+  \pause
+  \[
+    \VertSem{
+      The unicorn ran a marathon
+    }{
+      \pause
+      \Require{Unicorn}{x}{
+        \TyProd{Marathon}{y}{
+          Ran(x;y)
+        }
+      }
+    }
+  \]
+
+  \pause
+  \begin{center}
+    (not a proposition)
+  \end{center}
+\end{frame}
+
+\begin{frame}{a positive example}
+  \pause
+  \[
+    \VertSem{
+      The President ran a marathon
+    }{
+      \pause
+      \Require{President}{x}{
+        \TyProd{Marathon}{y}{
+          Ran(x;y)
+        }
+      }
+    }
+  \]
+\end{frame}
+
+\begin{frame}{a positive example}
+  \pause
+  \[
+    \VertEval{
+      \Require{President}{x}{
+        \TyProd{Marathon}{y}{
+          Ran(x;y)
+        }
+      }\pause
+    }{
+      \TyProd{Marathon}{y}{
+        Ran(Obama;y)
+      }
+    }
+  \]
+
+  \pause
+  \begin{center}
+    Evaluation is now non-deterministic
+  \end{center}
+\end{frame}
+
+\plain{Is $\OpRequire$ computationally effective?}
+
+\section{assertion acts in time}
+
+\begin{frame}{beth-kripke semantics for assertions}
+  assertion acts (judgments) are intensional (local)
+  \pause
+
+  \begin{align*}
+    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<2->{\GenJ{x}{\mathcal{J}(x)}\tag{general judgment}}\\
+    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<3->{\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\tag{hypothetical judgment}}\\
+    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<4->{\Eval{M}{N}\tag{evaluation}}\\
+    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<5->{\EqType{A}{B}\tag{typehood}}\\
+    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<6->{\IsTrue{A}\tag{truth}}\\
+    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<7->{\EqMember{M}{N}{A}\tag{membership}}
+  \end{align*}
+\end{frame}
+
+\begin{frame}{semantics of higher-order assertions}
+  \only<1>{
+    \begin{align*}
+      \IMode{w}&\Vdash\GenJ{x}{\mathcal{J}(x)}\tag{general judgment}\\
+      \IMode{w}&\Vdash\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\tag{hypothetical judgment}\\
+    \end{align*}
+  }
+  \only<2->{
+    \begin{alignat*}{3}
+      \IMode{w}&\Vdash\GenJ{x}{\mathcal{J}(x)}%
+        &\Longleftrightarrow \ \ \ &
+        \only<2>{\OMode{\cdots}}
+        \only<3->{\forall \IMode{u}\succeq\IMode{w}.\forall\Member{x}{\Model{u}}.\ \IMode{u}\Vdash\mathcal{J}(x)}\\
+      \IMode{w}&\Vdash\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\ \ \ %
+         &\Longleftrightarrow \ \ \ &
+         \only<2>{\OMode{\cdots}}
+         \only<3->{\forall \IMode{u}\succeq\IMode{w}.\ \IMode{u}\Vdash\mathcal{J}_1\Rightarrow\IMode{u}\Vdash\mathcal{J}_2}
+    \end{alignat*}
+  }
+  \only<4->{%
+    where $\Model{w}$ is the species of constructions that have been effected by stage $w$
+  }
+\end{frame}
+
+\begin{frame}{intensional / ephemeral truth (kripke)}
+  \[
+    \IMode{w}\Vdash\IsTrue{A}
+      \Longleftrightarrow\pause
+       \exists\Member{m}{\Model{w}}.\ \pause
+        \IMode{w}\Vdash\EqMember{m}{m}{A}
+  \]
+\end{frame}
+
+\begin{frame}{intensional / ephemeral truth (beth)}
+  \[
+    \IMode{w}\Vdash\IsTrue{A}
+      \Longleftrightarrow\pause
+       \exists\IMode{\mathfrak{B}}\;\mathbf{bars}\;\IMode{w}.\pause
+        \forall\Member{u}{\mathfrak{B}}.\pause
+         \exists\Member{m}{\Model{u}}.\ \pause
+          \IMode{u}\Vdash\EqMember{m}{m}{A}
+  \]
+\end{frame}
+
+\section{the $\OpRequire$ oracle: dynamics}
+
+%%% TODO: introduce creating subject
+
+\begin{frame}{$\OpRequire$ --- dynamics}
+  \begin{gather*}
+    \infer{
+      \Lawful{\Nil}
+    }{
+    }
+    \qquad
+    \infer{
+      \Lawful{\vec{u}\frown\rho}
+    }{
+      \Lawful{\vec{u}} &
+      \GenJ{n}{
+        \HypJ{
+          \IsLessThan{\mathbb{\rho}(n)}{n}
+        }{
+          \Member{n}{\mathbb{N}^+}
+        }
+      }
+    }\tag{spread law}
+  \end{gather*}
+
+  \begin{gather*}
+    \infer{
+      \Force{\alpha}{t}{
+        \Eval{\Require{A}{x}{N}}{N'}
+      }
+    }{
+      \Force{\alpha}{t}{\Eval{A}{A'}} &
+      \Match{\Size{\BKS{A'}(t)}}{\ell} &
+      \Match{\Head{\alpha}(\ell)}{j} &
+      \Force{\Tail{\alpha}}{t}{
+        \Eval{\left[\BKS{A'}(j)/x\right]N}{N'}
+      }
+    }\tag{for $\Member{\alpha}{\Spw}$}
+  \end{gather*}
+
+\end{frame}
+
+\plain{Questions?}
+
+%%\begin{frame}[allowframebreaks]
+%%
+%%  \frametitle{References}
+%%
+%%  \bibliography{refs}
+%%  \bibliographystyle{abbrv}
+%%
+%%\end{frame}
+
+\end{document}
