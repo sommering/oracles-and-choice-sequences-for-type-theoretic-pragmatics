@@ -156,7 +156,7 @@
         }
       }{p}{
         \pause
-        Beats(\only<2>{???;???}\only<3>{\Proj{1}(p);\Proj{2}(p)})
+        Beats(\only<2>{???;???}\only<3>{\Proj{1}(p);\Proj{1}(\Proj{2}(p))})
       }
     }
   \]
@@ -303,16 +303,16 @@
   \emph{Yes, but we need two things:}\pause
   \begin{enumerate}[<+->]
     \item knowledge-sensitive judgments \only<4->{\alert{(forcing)}}
-    \item \only<2-5>{non-}deterministic computation \only<6->{\alert{(use choice sequences)}}
+    \item \only<2-6>{non-}deterministic computation \only<6->{\alert{(use choice sequences)}}
   \end{enumerate}
 
   \begin{center}
-    \only<5>{
+    \only<5-7>{
       \framebox{
         $\IMode{w}\Vdash\mathcal{J}$
       }
     }
-    \only<6->{
+    \only<8->{
       \framebox{
         $\Force{\alpha}{w}{\mathcal{J}}$
       }
