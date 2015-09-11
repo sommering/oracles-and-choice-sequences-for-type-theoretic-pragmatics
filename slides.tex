@@ -299,6 +299,27 @@
 
 \plain{Is $\OpRequire$ computationally effective?}
 
+\begin{frame}
+  \emph{Yes, but we need two things:}\pause
+  \begin{enumerate}[<+->]
+    \item knowledge-sensitive judgments \only<4->{\alert{(forcing)}}
+    \item \only<2-5>{non-}deterministic computation \only<6->{\alert{(use choice sequences)}}
+  \end{enumerate}
+
+  \begin{center}
+    \only<5>{
+      \framebox{
+        $\IMode{w}\Vdash\mathcal{J}$
+      }
+    }
+    \only<6->{
+      \framebox{
+        $\Force{\alpha}{w}{\mathcal{J}}$
+      }
+    }
+  \end{center}
+\end{frame}
+
 \section{assertion acts in time}
 
 \begin{frame}{beth-kripke semantics for assertions}
