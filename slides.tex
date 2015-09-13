@@ -377,6 +377,23 @@
   \end{remark}
 \end{frame}
 
+\begin{frame}{meaning theory without uniformity constraints}
+  \pause
+  \begin{align*}
+    \textbf{\IMode{logical consequence}} &\Rightarrow \textbf{\OMode{semantic consequence}}\\
+    \textit{\IMode{Brouwer?, Martin-L\"of}} &\Rightarrow \textit{\OMode{Brouwer?, Heyting, Allen}}
+  \end{align*}
+  \pause
+  \begin{align*}
+    \textbf{\IMode{proof conditions}} &\Rightarrow \textbf{\OMode{assertion conditions}}\\
+    \textit{\IMode{Dummett, Martin-L\"of}} &\Rightarrow \textit{\OMode{Heyting, Van Atten}}
+  \end{align*}
+  \pause
+  \begin{align*}
+    \textbf{\IMode{global meaning explanation}} &\Rightarrow \textbf{\OMode{local meaning explanation}}\\
+    \textit{\IMode{Husserl, Dummett, Martin-L\"of}} &\Rightarrow \textit{\OMode{Brouwer?, Beth, Kripke}}
+  \end{align*}
+\end{frame}
 
 \begin{frame}{beth-kripke semantics for assertions}
   assertion acts (judgments) are intensional (local)
@@ -416,7 +433,7 @@
   }
 \end{frame}
 
-\begin{frame}{intensional / ephemeral truth (kripke)}
+\begin{frame}{intensional / local truth}
   \[
     \IMode{w}\Vdash\IsTrue{A}
       \Longleftrightarrow\pause
@@ -425,18 +442,16 @@
   \]
 \end{frame}
 
-\begin{frame}{intensional / ephemeral truth (beth)}
-  \[
-    \IMode{w}\Vdash\IsTrue{A}
-      \Longleftrightarrow\pause
-       \exists\IMode{\mathfrak{B}}\;\mathbf{bars}\;\IMode{w}.\pause
-        \forall\Member{u}{\mathfrak{B}}.\pause
-         \exists\Member{m}{\Model{u}}.\ \pause
-          \IMode{u}\Vdash\EqMember{m}{m}{A}
-  \]
-\end{frame}
-
-%%% TODO: introduce creating subject
+%%% \begin{frame}{intensional / local truth (beth)}
+%%%   \[
+%%%     \IMode{w}\Vdash\IsTrue{A}
+%%%       \Longleftrightarrow\pause
+%%%        \exists\IMode{\mathfrak{B}}\;\mathbf{bars}\;\IMode{w}.\pause
+%%%         \forall\Member{u}{\mathfrak{B}}.\pause
+%%%          \exists\Member{m}{\Model{u}}.\ \pause
+%%%           \IMode{u}\Vdash\EqMember{m}{m}{A}
+%%%   \]
+%%% \end{frame}
 
 \section{the $\OpRequire$ oracle: dynamics}
 
