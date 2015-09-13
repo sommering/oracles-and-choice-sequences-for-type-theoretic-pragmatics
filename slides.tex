@@ -244,26 +244,26 @@
   ...but only some of them denote propositions (types)!
 \end{frame}
 
-\begin{frame}{a negative example}
-  \pause
-  \[
-    \VertSem{
-      The unicorn ran a marathon
-    }{
-      \pause
-      \Require{Unicorn}{x}{
-        \TyProd{Marathon}{y}{
-          Ran(x;y)
-        }
-      }
-    }
-  \]
+\begin{frame}{$\OpRequire$---na\"ive dynamics}
 
+  \[
+    \infer{
+      \Eval{\Require{A}{x}{N}}{N'}
+    }{
+      \Member{M}{A} &
+      \Eval{\left[M/x\right]N}{N'}
+    }\tag{??}
+  \]
   \pause
-  \begin{center}
-    (not a proposition)
-  \end{center}
+
+  Can the above be made precise? \pause \alert{There are two problems:}\pause
+  \begin{enumerate}[<+->]
+    \item impredicativity
+    \item non-determinism
+  \end{enumerate}
 \end{frame}
+
+\plain{(hold that thought)}
 
 \begin{frame}{a positive example}
   \pause
@@ -296,10 +296,27 @@
       }
     }
   \]
+\end{frame}
+
+
+\begin{frame}{a negative example}
+  \pause
+  \[
+    \VertSem{
+      The unicorn ran a marathon
+    }{
+      \pause
+      \Require{Unicorn}{x}{
+        \TyProd{Marathon}{y}{
+          Ran(x;y)
+        }
+      }
+    }
+  \]
 
   \pause
   \begin{center}
-    Evaluation is now non-deterministic
+    (not a proposition)
   \end{center}
 \end{frame}
 
@@ -308,17 +325,17 @@
 \begin{frame}
   \emph{Yes, but we need two things:}\pause
   \begin{enumerate}[<+->]
-    \item knowledge-sensitive judgments \only<4->{\alert{(forcing)}}
-    \item \only<2-6>{non-}deterministic computation \only<6->{\alert{(use choice sequences)}}
+    \item judgments shall be local / sensitive to knowledge \only<4->{\alert{(via forcing)}}
+    \item non-determinism must be eliminated \only<6->{\alert{(via choice sequences)}}
   \end{enumerate}
 
   \begin{center}
-    \only<5-7>{
+    \only<5-6>{
       \framebox{
         $\Force{w}{\mathcal{J}}$
       }
     }
-    \only<8->{
+    \only<7->{
       \framebox{
         $\ForceND{\alpha}{w}{\mathcal{J}}$
       }
@@ -390,17 +407,6 @@
 
 \section{the $\OpRequire$ oracle: dynamics}
 
-\begin{frame}{plan of action}
-  We need to explain what it means for the following judgment to be forced:
-  \[
-    \Eval{\Require{A}{x}{N}}{N'}
-  \]
-  \pause
-
-  The collection of possible reductions is provided via the \alert{theory of the Creating Subject}.\pause
-
-  Non-determinism may be eliminated via by stating the judgments of type theory \alert{relative to a choice sequence}, subject to a spread law.
-\end{frame}
 
 \begin{frame}{the theory of the creating subject}
   \pause
@@ -412,7 +418,7 @@
       \begin{remark}
         Contra Dummett, I \emph{by no means} take the above as requiring that the following shall be true in a constructive metatheory, \alert{divorced from time}:
         \[
-          \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}} \lor \lnot \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}}\tag{infelicity}
+          \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}} \lor \lnot \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}}\tag{Dummett's infelicity}
         \]
         The above is impossible in a Beth model.
       \end{remark}
