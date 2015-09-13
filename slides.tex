@@ -58,6 +58,14 @@
    #3
 }
 
+\newcommand\Reflects[2]{
+ #1\ \ \mathbin\fullouterjoin\ \ #2
+}
+
+\newcommand\ReflectsAlign[2]{
+ #1\ &\mathbin\fullouterjoin\ #2
+}
+
 \newcommand\Eval[2]{\IMode{#1}\Downarrow\OMode{#2}}
 \newcommand\VertEval[2]{
   \begin{array}{c}%
@@ -72,14 +80,20 @@
 \newcommand\IsType[1]{\IMode{#1}\ \mathit{type}}
 \newcommand\EqType[2]{\IMode{#1}=\IMode{#2}\ \mathit{type}}
 \newcommand\IsTrue[1]{\IMode{#1}\ \mathit{true}}
+\newcommand\IsVer[1]{\IMode{#1}\ \mathit{verif}}
 \newcommand\OpSig[2]{\IMode{#1} : \OMode{#2}}
 \newcommand\NotationDef[2]{\IMode{#1} \eqdef \OMode{#2}}
 \newcommand\Match[2]{\IMode{#1}=\OMode{#2}}
 \newcommand\MatchAlign[2]{\IMode{#1}&=\OMode{#2}}
 \newcommand\Size[1]{\left\vert#1\right\vert}
 \newcommand\IsLessThan[2]{\IMode{#1}<\IMode{#2}}
+\newcommand\Bars[2]{\IMode{#1}\;\mathbf{bars}\;\IMode{#2}}
 
-\newcommand\Model[1]{\mathcal{M}_{#1}}
+\newcommand\VAL[2]{\mathcal{V}\SemBrackets{\IMode{#1}}_{\IMode{#2}}}
+
+\newcommand\Domain[1]{\mathcal{D}_{\IMode{#1}}}
+
+\newcommand\Block[1]{\fbox{\parbox{\textwidth}{#1}}}
 
 % expressions
 \newcommand\TyEnt{\mathbb{E}}
@@ -362,10 +376,10 @@
 
 \begin{frame}{remark on decidability}
   \begin{center}...\end{center}
-  \fbox{\parbox{\textwidth}{
+  \Block{
     \begin{enumerate}
       \item[2.] at a point in time, the subject knows whether or not it has experienced a judgment \alert{(decidability)}
-    \end{enumerate}}
+    \end{enumerate}
   }\pause
 
   \begin{remark}
@@ -400,12 +414,13 @@
   \pause
 
   \begin{align*}
-    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<2->{\GenJ{x}{\mathcal{J}(x)}\tag{general judgment}}\\
-    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<3->{\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\tag{hypothetical judgment}}\\
-    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<4->{\Eval{M}{N}\tag{evaluation}}\\
-    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<5->{\EqType{A}{B}\tag{typehood}}\\
-    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<6->{\IsTrue{A}\tag{truth}}\\
-    \only<8->{\IMode{w}}&\only<8->{\Vdash}\only<7->{\EqMember{M}{N}{A}\tag{membership}}
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<2->{\GenJ{x}{\mathcal{J}(x)}\tag{general judgment}}\\
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<3->{\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\tag{hypothetical judgment}}\\
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<4->{\Eval{M}{N}\tag{evaluation}}\\
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<5->{\IsType{A}\tag{typehood}}\\
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<6->{\IsVer{A}\tag{verification}}\\
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<7->{\IsTrue{A}\tag{truth}}\\
+    \only<9->{\IMode{w}}&\only<9->{\Vdash}\only<8->{\EqMember{M}{N}{A}\tag{membership}}
   \end{align*}
 \end{frame}
 
@@ -421,7 +436,7 @@
       \ForceAlign{w}{\GenJ{x}{\mathcal{J}(x)}}%
         &\Longleftrightarrow \ \ \ &
         \only<2>{\OMode{\cdots}}
-        \only<3->{\forall \IMode{u}\succeq\IMode{w}.\forall\Member{x}{\Model{u}}.\ \IMode{u}\Vdash\mathcal{J}(x)}\\
+        \only<3->{\forall \IMode{u}\succeq\IMode{w}.\forall\Member{x}{\Domain{u}}.\ \IMode{u}\Vdash\mathcal{J}(x)}\\
       \IMode{w}&\Vdash\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\ \ \ %
          &\Longleftrightarrow \ \ \ &
          \only<2>{\OMode{\cdots}}
@@ -429,32 +444,91 @@
     \end{alignat*}
   }
   \only<4->{%
-    where $\Model{w}$ is the species of constructions that have been effected by stage $w$
+    where $\Domain{w}$ is the species of constructions that have been effected by stage $w$
   }
 \end{frame}
 
-\begin{frame}{intensional / local truth}
+\begin{frame}{the meaning of a proposition}
+  The meaning of a proposition/type is an intensional (world-indexed)
+  specification of verification acts, i.e.\ a local meaning explanation for
+  \framebox{$\Force{w}{\IsVer{P}}$} (and its synthesis).
+  \pause
+  \bigskip
+
+  For a type $A$, implicit in the explanation of $\Force{w}{\IsVer{P}}$ is a
+  PER $\VAL{A}{w}\subseteq \Domain{w}\times\Domain{w}$ whose members
+  \alert{reflect} the computational content of \emph{verification acts}.
+\end{frame}
+
+\begin{frame}{intuitionistic semantics of truth}
+  Truth (\alert{justification}) consists in recognizing the effectiveness of a
+  procedure for \alert{verification}.
+  \pause\bigskip
+
+  In the model, this corresponds to the inevitability of verification (i.e.\ a
+  \emph{bar}, in which verification occurs at all nodes):
   \[
-    \IMode{w}\Vdash\IsTrue{A}
-      \Longleftrightarrow\pause
-       \exists\Member{m}{\Model{w}}.\ \pause
-        \IMode{w}\Vdash\EqMember{m}{m}{A}
+    \Force{w}{\IsTrue{A}}
+      \Longleftrightarrow
+       \exists\Bars{\mathfrak{B}}{w}.
+        \forall\Member{u}{\mathfrak{B}}.\
+         \Force{u}{\IsVer{A}}
+          \tag{due to Dummett}
   \]
 \end{frame}
 
-%%% \begin{frame}{intensional / local truth (beth)}
-%%%   \[
-%%%     \IMode{w}\Vdash\IsTrue{A}
-%%%       \Longleftrightarrow\pause
-%%%        \exists\IMode{\mathfrak{B}}\;\mathbf{bars}\;\IMode{w}.\pause
-%%%         \forall\Member{u}{\mathfrak{B}}.\pause
-%%%          \exists\Member{m}{\Model{u}}.\ \pause
-%%%           \IMode{u}\Vdash\EqMember{m}{m}{A}
-%%%   \]
-%%% \end{frame}
+\begin{frame}{membership as reflection on truth}
+  The analytic judgments of type theory are reflections on mathematical activity.
+  \pause
+
+  \begin{enumerate}[<+->]
+    \item \IMode{\bfseries Canonical membership} reflects \OMode{\bfseries verification}
+    \item \IMode{\bfseries Membership} reflects \OMode{\bfseries justification}
+    \item \IMode{\bfseries Computation} reflects \OMode{\bfseries the recognition of a \emph{bar}}
+  \end{enumerate}
+
+  \Block{
+    \only<2>{
+      \[
+        \Reflects{
+          \VAL{A}{w}(\IMode{M},\IMode{N})
+        }{
+          \Force{w}{\IsVer{A}}
+        }
+      \]
+    }
+
+    \only<3-4>{
+      \[
+        \Reflects{
+          \Force{w}{\EqMember{A}{M}{N}}
+        }{
+          \Force{w}{\IsTrue{A}}
+        }
+      \]
+    }
+
+    \only<5->{
+      \[
+        \Reflects{
+          \land\left\{
+            \begin{array}{l}
+              \Force{w}{\Eval{M}{M'}}\\
+              \Force{w}{\Eval{N}{N'}}\\
+              \Force{w}{\VAL{A}{w}(\IMode{M'},\IMode{N'})}
+            \end{array}
+          \right\}
+        }{
+          \exists\Bars{\mathfrak{B}}{w}.
+           \forall\Member{u}{\mathfrak{B}}.\
+            \Force{u}{\IsVer{A}}
+        }
+      \]
+    }
+  }
+\end{frame}
 
 \section{the $\OpRequire$ oracle: dynamics}
-
 
 \begin{frame}{$\OpRequire$ --- dynamics}
   \begin{gather*}
