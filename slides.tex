@@ -18,10 +18,12 @@
 \usepackage{xunicode}
 \setmathfont{Asana Math}
 
-\definecolor{MidnightBlue}{rgb}{0.1, 0.1, 0.44}
-\definecolor{Maroon}{rgb}{0.5, 0.0, 0.0}
+% \theoremstyle{mystyle}
+\newtheorem*{remark}{Remark}
 
 % colors
+\definecolor{MidnightBlue}{rgb}{0.1, 0.1, 0.44}
+\definecolor{Maroon}{rgb}{0.5, 0.0, 0.0}
 \def\InputModeColorName{MidnightBlue}
 \def\OutputModeColorName{Maroon}
 
@@ -37,7 +39,8 @@
   #1\ \left(#2\right)
 }
 
-\newcommand\Meaning[1]{\left\llbracket\textit{#1}\right\rrbracket}
+\newcommand\SemBrackets[1]{\left\llbracket #1\right\rrbracket}
+\newcommand\Meaning[1]{\SemBrackets{\textit{#1}}}
 \newcommand\VertSem[2]{%
   \begin{array}{c}%
     \Meaning{\IMode{#1}}\\%
@@ -46,7 +49,10 @@
   \end{array}%
 }
 
-\newcommand\Force[3]{
+\newcommand\Force[2]{\IMode{#1}\Vdash #2}
+\newcommand\ForceAlign[2]{\IMode{#1}&\Vdash#2}
+
+\newcommand\ForceND[3]{
    \IMode{#1}%
    \sdtstile{\IMode{#2}}{}%
    #3
@@ -107,16 +113,16 @@
 \begin{frame}{natural language semantics and anaphora}
   \pause
   \[
-    \VertSem{A man walked in.}{
+    \VertSem{A woman walked in.}{
       \pause
-      \TyProd{Man}{p}{\pause WalkedIn(p)}
+      \TyProd{Woman}{p}{\pause WalkedIn(p)}
     }
   \]
 \end{frame}
 
 \begin{frame}{natural language semantics and anaphora}
   \[
-    \VertSem{He sat down}{
+    \VertSem{She sat down}{
       \pause
       SatDown(???)
     }
@@ -125,9 +131,9 @@
 
 \begin{frame}{natural language semantics and anaphora}
   \[
-    \VertSem{A man walked in. He sat down}{
+    \VertSem{A woman walked in. She sat down}{
       \pause
-      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{
+      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{
         \pause
         SatDown(???)
       }
@@ -137,8 +143,8 @@
 
 \begin{frame}{natural language semantics and anaphora}
   \[
-    \VertSem{A man walked in. He sat down}{
-      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{
+    \VertSem{A woman walked in. She sat down}{
+      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{
         SatDown(\Proj{1}(x))
       }
     }
@@ -192,10 +198,10 @@
 
 \begin{frame}{$\OpRequire$ --- examples}
   \[
-    \VertSem{A man walked in. He sat down}{
-      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{
+    \VertSem{A woman walked in. She sat down}{
+      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{
         \only<1>{SatDown(???)}%
-        \only<2>{\Require{Man}{y}{SatDown(y)}}%
+        \only<2>{\Require{Woman}{y}{SatDown(y)}}%
       }
     }
   \]
@@ -217,9 +223,9 @@
   \only<5->{
     \textbf{What we want:}
     \begin{gather*}
-      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{\Require{Man}{y}{SatDown(y)}}\\
+      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{\Require{Woman}{y}{SatDown(y)}}\\
       \sim\\
-      \TyProd{\TyProd{Man}{p}{WalkedIn(p)}}{x}{\Proj{1}(x)}
+      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{\Proj{1}(x)}
     \end{gather*}
   }
 
@@ -309,12 +315,12 @@
   \begin{center}
     \only<5-7>{
       \framebox{
-        $\IMode{w}\Vdash\mathcal{J}$
+        $\Force{w}{\mathcal{J}}$
       }
     }
     \only<8->{
       \framebox{
-        $\Force{\alpha}{w}{\mathcal{J}}$
+        $\ForceND{\alpha}{w}{\mathcal{J}}$
       }
     }
   \end{center}
@@ -339,13 +345,13 @@
 \begin{frame}{semantics of higher-order assertions}
   \only<1>{
     \begin{align*}
-      \IMode{w}&\Vdash\GenJ{x}{\mathcal{J}(x)}\tag{general judgment}\\
-      \IMode{w}&\Vdash\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\tag{hypothetical judgment}\\
+      \ForceAlign{w}{\GenJ{x}{\mathcal{J}(x)}}\tag{general judgment}\\
+      \ForceAlign{w}{ \HypJ{\mathcal{J}_2}{\mathcal{J}_1}}\tag{hypothetical judgment}\\
     \end{align*}
   }
   \only<2->{
     \begin{alignat*}{3}
-      \IMode{w}&\Vdash\GenJ{x}{\mathcal{J}(x)}%
+      \ForceAlign{w}{\GenJ{x}{\mathcal{J}(x)}}%
         &\Longleftrightarrow \ \ \ &
         \only<2>{\OMode{\cdots}}
         \only<3->{\forall \IMode{u}\succeq\IMode{w}.\forall\Member{x}{\Model{u}}.\ \IMode{u}\Vdash\mathcal{J}(x)}\\
@@ -380,9 +386,39 @@
   \]
 \end{frame}
 
+%%% TODO: introduce creating subject
+
 \section{the $\OpRequire$ oracle: dynamics}
 
-%%% TODO: introduce creating subject
+\begin{frame}{plan of action}
+  We need to explain what it means for the following judgment to be forced:
+  \[
+    \Eval{\Require{A}{x}{N}}{N'}
+  \]
+  \pause
+
+  The collection of possible reductions is provided via the \alert{theory of the Creating Subject}.\pause
+
+  Non-determinism may be eliminated via by stating the judgments of type theory \alert{relative to a choice sequence}, subject to a spread law.
+\end{frame}
+
+\begin{frame}{the theory of the creating subject}
+  \pause
+  All mathematics is a mental construction in the mind of an idealized subject, subject to the following laws:
+  \pause
+  \begin{enumerate}[<+->]
+    \item experiences are never forgotten \alert{(monotonicity, functoriality)}
+    \item at a point in time, the subject knows whether or not it has experienced a judgment \alert{(decidability)}
+      \begin{remark}
+        Contra Dummett, I \emph{by no means} take the above as requiring that the following shall be true in a constructive metatheory, \alert{divorced from time}:
+        \[
+          \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}} \lor \lnot \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}}\tag{infelicity}
+        \]
+        The above is impossible in a Beth model.
+      \end{remark}
+  \end{enumerate}
+
+\end{frame}
 
 \begin{frame}{$\OpRequire$ --- dynamics}
   \begin{gather*}
@@ -407,14 +443,14 @@
 
   \begin{gather*}
     \infer{
-      \Force{\alpha}{t}{
+      \ForceND{\alpha}{t}{
         \Eval{\Require{A}{x}{N}}{N'}
       }
     }{
-      \Force{\alpha}{t}{\Eval{A}{A'}} &
+      \ForceND{\alpha}{t}{\Eval{A}{A'}} &
       \Match{\Size{\BKS{A'}(t)}}{\ell} &
       \Match{\Head{\alpha}(\ell)}{j} &
-      \Force{\Tail{\alpha}}{t}{
+      \ForceND{\Tail{\alpha}}{t}{
         \Eval{\left[\BKS{A'}(j)/x\right]N}{N'}
       }
     }\tag{for $\Member{\alpha}{\Spw}$}
