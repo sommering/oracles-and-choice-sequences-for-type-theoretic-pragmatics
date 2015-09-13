@@ -343,7 +343,40 @@
   \end{center}
 \end{frame}
 
-\section{assertion acts in time}
+\section{the creating subject}
+
+\begin{frame}{the theory of the creating subject}
+  \pause
+  All mathematics is a mental construction performed by an idealized subject, \alert<3->{subject to the following observations about knowledge}:
+  \pause
+  \pause
+  \begin{enumerate}[<+->]
+    \item experiences are never forgotten \alert{(monotonicity, functoriality)}
+    \item at a point in time, the subject knows whether or not it has experienced a judgment \alert{(decidability)}
+
+      \begin{corollary}
+        The meaning of a judgment $\mathcal{J}$ must be explained in terms of its forcing condition, \framebox{$\Force{w}{\mathcal{J}}$}, for any stage/world $\IMode{w}$.
+      \end{corollary}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{remark on decidability}
+  \begin{center}...\end{center}
+  \fbox{\parbox{\textwidth}{
+    \begin{enumerate}
+      \item[2.] at a point in time, the subject knows whether or not it has experienced a judgment \alert{(decidability)}
+    \end{enumerate}}
+  }\pause
+
+  \begin{remark}
+    Contra Dummett, I \emph{by no means} take the above as requiring that the following shall be true in a constructive metatheory, \alert{divorced from time}:
+    \[
+      \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}} \lor \lnot \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}}\tag{Dummett's infelicity}
+    \]
+    The above is impossible in a Beth model.
+  \end{remark}
+\end{frame}
+
 
 \begin{frame}{beth-kripke semantics for assertions}
   assertion acts (judgments) are intensional (local)
@@ -407,24 +440,6 @@
 
 \section{the $\OpRequire$ oracle: dynamics}
 
-
-\begin{frame}{the theory of the creating subject}
-  \pause
-  All mathematics is a mental construction in the mind of an idealized subject, subject to the following laws:
-  \pause
-  \begin{enumerate}[<+->]
-    \item experiences are never forgotten \alert{(monotonicity, functoriality)}
-    \item at a point in time, the subject knows whether or not it has experienced a judgment \alert{(decidability)}
-      \begin{remark}
-        Contra Dummett, I \emph{by no means} take the above as requiring that the following shall be true in a constructive metatheory, \alert{divorced from time}:
-        \[
-          \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}} \lor \lnot \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}}\tag{Dummett's infelicity}
-        \]
-        The above is impossible in a Beth model.
-      \end{remark}
-  \end{enumerate}
-
-\end{frame}
 
 \begin{frame}{$\OpRequire$ --- dynamics}
   \begin{gather*}
