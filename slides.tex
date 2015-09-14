@@ -395,17 +395,21 @@
   \pause
   \begin{align*}
     \textbf{\IMode{logical consequence}} &\Rightarrow \textbf{\OMode{semantic consequence}}\\
-    \textit{\IMode{Brouwer?, Martin-L\"of}} &\Rightarrow \textit{\OMode{Brouwer?, Heyting, Allen}}
+    \textit{\IMode{Brouwer?, Martin-L\"of, Sundholm}} &\Rightarrow \textit{\OMode{Brouwer?, Heyting, Allen}}
   \end{align*}
   \pause
   \begin{align*}
     \textbf{\IMode{proof conditions}} &\Rightarrow \textbf{\OMode{assertion conditions}}\\
-    \textit{\IMode{Dummett, Martin-L\"of}} &\Rightarrow \textit{\OMode{Heyting, Van Atten}}
+    \textit{\IMode{Martin-L\"of, Sundholm}} &\Rightarrow \textit{\OMode{Heyting, Van Atten}}
   \end{align*}
   \pause
   \begin{align*}
     \textbf{\IMode{global meaning explanation}} &\Rightarrow \textbf{\OMode{local meaning explanation}}\\
-    \textit{\IMode{Husserl, Dummett, Martin-L\"of}} &\Rightarrow \textit{\OMode{Brouwer?, Beth, Kripke}}
+    \textit{\IMode{Husserl, Dummett, Martin-L\"of}} &\Rightarrow
+      \begin{array}{l}
+        \textit{\OMode{Brouwer?, Beth, Kripke,}}\\
+        \textit{\OMode{Grothendieck, Lawvere, Joyal}}
+      \end{array}
   \end{align*}
 \end{frame}
 
@@ -501,7 +505,7 @@
     \only<3-4>{
       \[
         \Reflects{
-          \Force{w}{\EqMember{A}{M}{N}}
+          \Force{w}{\EqMember{M}{N}{A}}
         }{
           \Force{w}{\IsTrue{A}}
         }
