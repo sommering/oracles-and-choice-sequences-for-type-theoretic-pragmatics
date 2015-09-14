@@ -95,6 +95,10 @@
 
 \newcommand\Block[1]{\fbox{\parbox{\textwidth}{#1}}}
 
+\newcommand\Worlds{\mathbb{W}}
+\newcommand\FINSET{\mathbf{FinSet}}
+\newcommand\Opposite[1]{#1^{\mathrm{op}}}
+
 % expressions
 \newcommand\TyEnt{\mathbb{E}}
 \newcommand\TyFun[3]{(\Pi #2\in #1)\, #3}
@@ -533,6 +537,83 @@
 \end{frame}
 
 \section{the $\OpRequire$ oracle: dynamics}
+
+\begin{frame}{choice sequences and the creating subject}
+
+  choice sequences (streams of objects) may be propounded over time based on
+  the previous experience of the creating subject.
+  \pause
+
+  Example:
+  \[
+    \alpha(\IMode{i}) =
+      \begin{cases}
+        \OMode{0} & \Force{i}{\IsTrue{A}}\\
+        \OMode{1} & \lnot(\Force{i}{\IsTrue{A}})
+      \end{cases}\tag{KS}
+  \]
+
+\end{frame}
+
+\begin{frame}{the justifications sheaf}
+
+  Based on this meaning explanation, we can justify the construct a family of
+  sheaves $\mathcal{K}_A : \FINSET^{\Opposite{\Worlds}}$, such that
+  $\mathcal{K}_A(w)$ is the species of constructions of $\IsTrue{A}$ which have
+  been effected at or prior to $w$.
+  \pause\bigskip
+
+  We now can give a precise, but non-deterministic, dynamics to $\OpRequire$:
+  \pause
+
+  \begin{gather*}
+    \infer{
+      \Force{w}{
+        \Eval{\Require{A}{x}{N}}{N'}
+      }
+    }{
+      \Force{w}{\Eval{A}{A'}} &
+      \Member{M}{\mathcal{K}_{A'}(w)} &
+      \Force{w}{
+        \Eval{\left[M/x\right]N}{N'}
+      }
+    }\tag{*}
+  \end{gather*}
+
+
+\end{frame}
+
+\begin{frame}{eliminating non-determinism with a spread}
+
+  We need a way to deterministically choose a representative of
+  $\mathcal{K}_A(w)$. First, let $\BKS{A}$ be the choice sequence of lists given
+  by enumerating $\mathcal{K}_A(w)$ at each world $w$, in order of construction.
+  \pause\medskip
+
+  Idea: reformulate the judgments relative to a choice sequence of ``choosers''.
+\end{frame}
+
+\begin{frame}{spreads: sets of choice sequences}
+
+  A spread $\Spw$ is a restriction on choice sequences which is defined by a
+  condition on their finite approximations (prefixes, \alert{neighborhoods}),
+  subject to the following laws:\pause
+
+  \begin{enumerate}[<+->]
+    \item the empty neighborhood shall be admitted
+      \[ \Lawful{\Nil} \]
+    \item if a neighborhood is admitted, so shall all its subneighborhoods
+      \[
+        \GenJ{\vec{u},m}{\HypJ{\Lawful{\vec{u}}}{\Lawful{\vec{u}\frown m}}}
+      \]
+    \item inclusion of neighborhoods is closed under refinement/extension
+      \[
+         \GenJ{\vec{u}}{\HypJ{\Lawful{\vec{u}\frown\OMode{m}}}{\Lawful{\vec{u}}}}
+      \]
+  \end{enumerate}
+
+
+\end{frame}
 
 \begin{frame}{$\OpRequire$ --- dynamics}
   \begin{gather*}
