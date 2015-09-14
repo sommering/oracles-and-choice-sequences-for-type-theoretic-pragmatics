@@ -52,12 +52,6 @@
 \newcommand\Force[2]{\IMode{#1}\Vdash #2}
 \newcommand\ForceAlign[2]{\IMode{#1}&\Vdash#2}
 
-\newcommand\ForceND[3]{
-   \IMode{#1}%
-   \sdtstile{\IMode{#2}}{}%
-   #3
-}
-
 \newcommand\Reflects[2]{
  #1\ \ \mathbin\fullouterjoin\ \ #2
 }
@@ -67,6 +61,7 @@
 }
 
 \newcommand\Eval[2]{\IMode{#1}\Downarrow\OMode{#2}}
+\newcommand\EvalND[3]{\IMode{#2}\Downarrow_{\IMode{#1}}\OMode{#3}}
 \newcommand\VertEval[2]{
   \begin{array}{c}%
     \IMode{#1}\\%
@@ -355,7 +350,7 @@
     }
     \only<7->{
       \framebox{
-        $\ForceND{\alpha}{w}{\mathcal{J}}$
+        $\Force{w}{\mathcal{J}_\IMode{\alpha}}$
       }
     }
   \end{center}
@@ -590,7 +585,7 @@
   by enumerating $\mathcal{K}_A(w)$ at each world $w$, in order of construction.
   \pause\medskip
 
-  Idea: reformulate the judgments relative to a choice sequence of ``choosers''.
+  \alert{Idea: reformulate Type Theory relative to a choice sequence of ``choosers''.}
 \end{frame}
 
 \begin{frame}{spreads: sets of choice sequences}
@@ -616,6 +611,7 @@
 \end{frame}
 
 \begin{frame}{$\OpRequire$ --- dynamics}
+  A spread for index-choosers:
   \begin{gather*}
     \infer{
       \Lawful{\Nil}
@@ -635,18 +631,18 @@
       }
     }\tag{spread law}
   \end{gather*}
+  \pause
 
+  Deterministic dynamics for $\OpRequire$:
   \begin{gather*}
     \infer{
-      \ForceND{\alpha}{t}{
-        \Eval{\Require{A}{x}{N}}{N'}
-      }
+      \Force{w}{\EvalND{\alpha}{\Require{A}{x}{N}}{N'}}
     }{
-      \ForceND{\alpha}{t}{\Eval{A}{A'}} &
-      \Match{\Size{\BKS{A'}(t)}}{\ell} &
+      \Force{w}{\EvalND{\alpha}{A}{A'}} &
+      \Match{\Size{\BKS{A'}(w)}}{\ell} &
       \Match{\Head{\alpha}(\ell)}{j} &
-      \ForceND{\Tail{\alpha}}{t}{
-        \Eval{\left[\BKS{A'}(j)/x\right]N}{N'}
+      \Force{w}{
+        \EvalND{\Tail{\alpha}}{\left[\BKS{A'}(j)/x\right]N}{N'}
       }
     }\tag{for $\Member{\alpha}{\Spw}$}
   \end{gather*}
