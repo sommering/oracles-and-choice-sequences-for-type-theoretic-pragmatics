@@ -69,10 +69,15 @@
     \OMode{#2}%
   \end{array}%
 }
-\newcommand\Seq[2]{\IMode{#1}\vdash\IMode{#2}}
+\newcommand\Seq[2]{\IMode{#1}\vdash #2}
+\newcommand\SeqND[3]{\IMode{#2}\vdash_{\IMode{#1}} #3}
+\newcommand\Choose[3]{\IMode{#2}\ni_{\IMode{#1}}\OMode{#3}}
 \newcommand\Member[2]{\IMode{#1}\in\IMode{#2}}
 \newcommand\EqMember[3]{\IMode{#1}=\IMode{#2}\in\IMode{#3}}
+\newcommand\EqMemberND[4]{\IMode{#2}=\IMode{#3}\in_{\IMode{#1}}\IMode{#4}}
+\newcommand\MemberND[3]{\IMode{#2}\in_{\IMode{#1}}\IMode{#3}}
 \newcommand\IsType[1]{\IMode{#1}\ \text{\rmfamily\itshape type}}
+\newcommand\IsTypeND[2]{\IMode{#2}\ \text{\rmfamily\itshape type}_{#1}}
 \newcommand\EqType[2]{\IMode{#1}=\IMode{#2}\ \text{\rmfamily\itshape type}}
 \newcommand\IsTrue[1]{\IMode{#1}\ \text{\rmfamily\itshape true}}
 \newcommand\IsVer[1]{\IMode{#1}\ \text{\rmfamily\itshape verif}}
@@ -203,7 +208,7 @@
     \infer{
       \Seq{\Gamma}{\Member{\Require{A}{x}{N}}{B}}
     }{
-      \Seq{\Gamma}{\IsType{A}} &
+      \Seq{\Gamma}{\Member{M}{A}} &
       \Seq{\Gamma,x:A}{\Member{N}{B}}
     }\tag{\textit{require}}
   \]
@@ -399,14 +404,14 @@
   \pause
   \begin{align*}
     \textbf{\IMode{proof conditions}} &\Rightarrow \textbf{\OMode{assertion conditions}}\\
-    \textit{\IMode{Martin-L\"of, Sundholm}} &\Rightarrow \textit{\OMode{Brouwer, Heyting, Van Atten}}
+    \textit{\IMode{Dummett, Martin-L\"of, Sundholm}} &\Rightarrow \textit{\OMode{Brouwer, Heyting, Van Atten}}
   \end{align*}
   \pause
   \begin{align*}
     \textbf{\IMode{global meaning explanation}} &\Rightarrow \textbf{\OMode{local meaning explanation}}\\
     \textit{\IMode{Husserl, Dummett, Martin-L\"of}} &\Rightarrow
       \begin{array}{l}
-        \textit{\OMode{Brouwer?, Beth, Kripke,}}\\
+        \textit{\OMode{Brouwer, Beth, Kripke,}}\\
         \textit{\OMode{Grothendieck, Lawvere, Joyal}}
       \end{array}
   \end{align*}
@@ -519,7 +524,7 @@
             \begin{array}{l}
               \Force{w}{\Eval{M}{M'}}\\
               \Force{w}{\Eval{N}{N'}}\\
-              \Force{w}{\VAL{A}{w}(\IMode{M'},\IMode{N'})}
+              \VAL{A}{w}(\IMode{M'},\IMode{N'})
             \end{array}
           \right\}
         }{
@@ -529,6 +534,26 @@
         }
       \]
     }
+  }
+\end{frame}
+
+\begin{frame}{intuitionistic truth vs constructive truth}
+  \only<2>{
+    a statement is intuitionistically true if it is forced at all nodes
+  }
+
+  \only<3->{
+    \sout{a statement is intuitionistically true if it is forced at all nodes}
+  }
+
+  \only<4->{
+    \alert{a statement is constructively true if it is forced at all nodes}
+  }
+
+  \bigskip
+
+  \only<5->{
+    Intuitionism subsumes constructivism, but goes much further by allowing the observation of non-constructive objects (Fourman)
   }
 \end{frame}
 
@@ -608,7 +633,7 @@
 
 \end{frame}
 
-\begin{frame}{$\OpRequire$ --- dynamics}
+\begin{frame}{a conservative extension of type theory}
   A spread direction for index-choosers:
   \begin{gather*}
     \infer{
@@ -631,21 +656,189 @@
   \end{gather*}
   \pause
 
-  Deterministic dynamics for $\OpRequire$:
-  \begin{gather*}
+  Reformulate type theory relative to an arbitrary $\Member{\alpha}{\Spw}$! For instance:
+
+  \[
+    \infer={
+      \Force{w}{\EqMemberND{\alpha}{M}{N}{A}}
+    }{
+      \Force{w}{\EvalND{\alpha}{M}{M'}} &
+      \Force{w}{\EvalND{\alpha}{N}{N'}} &
+      \VAL{A}{w}(\IMode{M'},\IMode{N'})
+    }
+  \]
+\end{frame}
+
+\begin{frame}{$\OpRequire$ --- dynamics}
+  Deterministic choice for $\BKS{A}$:
+  \[
     \infer{
-      \Force{w}{\EvalND{\alpha}{\Require{A}{x}{N}}{N'}}
+      \Force{w}{\Choose{\alpha}{\BKS{A}}{M}}
     }{
       \Force{w}{\EvalND{\alpha}{A}{A'}} &
       \Match{\Size{\BKS{A'}(w)}}{\ell} &
-      \Match{\Head{\alpha}(\ell)}{j} &
+      \Match{\Head{\alpha}(\ell)}{i} &
+      \Match{\BKS{A'}(w)(i)}{M}
+    }
+  \]
+  \pause
+
+  Deterministic dynamics for $\OpRequire$:
+  \[
+    \infer{
+      \Force{w}{\EvalND{\alpha}{\Require{A}{x}{N}}{N'}}
+    }{
+      \Force{w}{\Choose{\alpha}{\BKS{A}}{M}} &
       \Force{w}{
-        \EvalND{\Tail{\alpha}}{\left[\BKS{A'}(j)/x\right]N}{N'}
+        \EvalND{\Tail{\alpha}}{[M/x]N}{N'}
       }
     }\tag{for $\Member{\alpha}{\Spw}$}
-  \end{gather*}
-
+  \]
 \end{frame}
+
+\begin{frame}{validity of the require rule}
+  \begin{theorem}
+    The following rule is valid in our semantics:
+    \[
+      \infer[\textit{require}]{
+        \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
+      }{
+        \Force{w}{\IsTrue{A}} &
+        \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
+      }
+    \]
+  \end{theorem}
+\end{frame}
+
+\plain{proof sketch}
+
+\begin{frame}
+  \[
+    \infer[\textit{require}]{
+      \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
+    }{
+      \Force{w}{\IsTrue{A}} &
+      \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
+    }
+  \]
+\end{frame}
+
+\begin{frame}
+  \begin{gather*}
+    \infer[\mathcal{D}]{
+      \Force{w}{\IsTrue{A}}
+    }{
+    }\qquad
+    \infer[\mathcal{E}]{
+      \Force{w}{\Seq{x:A}{\Member{N}{B}}}
+    }{
+      \only<5->{
+        \infer{
+          \Force{w}{
+            \GenJ{y,z}{
+              \HypJ{
+                \EqMemberND{\alpha}{[y/x]N}{[z/x]N}{B}
+              }{
+                \EqMemberND{\alpha}{y}{z}{A}
+              }
+            }
+          }
+        }{
+          \only<6->{
+            \infer[\mathcal{F}]{
+              \scriptstyle\forall\IMode{u}\succeq\IMode{w}.\forall\Member{y,z}{\Domain{u}}.\ \Force{u}{\EqMemberND{\alpha}{y}{z}{A}} \ \Rightarrow\ \Force{u}{\EqMemberND{\alpha}{[y/x]N}{[z/x]N}{B}}
+            }{
+            }
+          }
+        }
+      }
+    }\\[6pt]
+    \only<7->{
+      \infer{
+        \only<10>{\Force{w}{\MemberND{\alpha}{[M/x]N}{B}}}
+        \only<11->{
+          \infer{
+            \Force{w}{\MemberND{\alpha}{[M/x]N}{B}}
+          }{
+            \only<12->{
+              \infer[\mathcal{G}]{
+                \Force{w}{\EvalND{\alpha}{[M/x]N}{N'}}
+              }{
+              } &
+              \infer[\mathcal{H}]{
+                \VAL{B}{w}(\IMode{N'},\IMode{N'})
+              }{
+              }
+            }
+          }
+        }
+      }{
+        \infer[\mathcal{F}(w,M,M)]{
+          \Force{w}{\MemberND{\alpha}{M}{A}} \Rightarrow \Force{w}{\MemberND{\alpha}{[M/x]N}{B}}
+        }{
+          \checkmark
+        }&
+        \infer{
+          \Force{w}{\MemberND{\alpha}{M}{A}}
+        }{
+          \only<8->{
+            \infer{
+              \Force{w}{\Choose{\alpha}{\BKS{A}}{M}}
+            }{
+              \only<9->{
+                \infer[\mathcal{D}]{
+                  \Force{w}{\IsTrue{A}}
+                }{
+                  \checkmark
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  \end{gather*}
+  \begin{gather*}
+    \infer[\textit{require}]{
+      \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
+    }{
+      \only<2->{
+        \infer{
+          \Force{w}{\EvalND{\alpha}{\Require{A}{x}{N}}{N'}}
+        }{
+          \only<3->{
+            \infer{\Force{w}{\Choose{\alpha}{\BKS{A}}{M}}}{
+              \only<4->{
+                \infer[\mathcal{D}]{\Force{w}{\IsTrue{A}}}{\checkmark}
+              }
+            }&
+            \infer[\only<13->{\mathcal{G}}]{
+              \EvalND{\alpha}{[M/x]N}{N'}
+            }{
+              \only<13->{\checkmark}
+            }
+          }
+        }&
+        \infer[\only<14->{\mathcal{H}}]{
+          \VAL{B}{w}(\IMode{N'},\IMode{N'})
+        }{
+          \only<14->{\checkmark}
+        }
+      }
+    }
+  \end{gather*}
+  \only<15->{\qed}
+\end{frame}
+
+          %% \Force{w}{
+          %%   \GenJ{y,z}{
+          %%     \HypJ{
+          %%       \EqMemberND{\alpha}{[y/x]N}{[z/x]N}{B}
+          %%     }{
+          %%       \EqMemberND{\alpha}{y}{z}{A}
+          %%     }
+          %%   }
+          %% }
 
 \plain{Questions?}
 
