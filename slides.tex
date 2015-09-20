@@ -90,6 +90,7 @@
 \newcommand\Bars[2]{\IMode{#1}\;\mathbf{bars}\;\IMode{#2}}
 
 \newcommand\VAL[2]{\mathcal{V}\!\SemBrackets{\IMode{#1}}_{\IMode{#2}}}
+\newcommand\VALND[3]{\mathcal{V}\!\SemBrackets{\IMode{#2}}_{\IMode{#3}}^{\IMode{#1}}}
 
 \newcommand\Domain[1]{\mathcal{D}_{\IMode{#1}}}
 
@@ -664,7 +665,7 @@
     }{
       \Force{w}{\EvalND{\alpha}{M}{M'}} &
       \Force{w}{\EvalND{\alpha}{N}{N'}} &
-      \VAL{A}{w}(\IMode{M'},\IMode{N'})
+      \VALND{\alpha}{A}{w}(\IMode{M'},\IMode{N'})
     }
   \]
 \end{frame}
@@ -766,7 +767,7 @@
               }{
               } &
               \infer[\mathcal{H}]{
-                \VAL{B}{w}(\IMode{N'},\IMode{N'})
+                \VALND{\alpha}{B}{w}(\IMode{N'},\IMode{N'})
               }{
               }
             }
@@ -820,7 +821,7 @@
           }
         }&
         \infer[\only<14->{\mathcal{H}}]{
-          \VAL{B}{w}(\IMode{N'},\IMode{N'})
+          \VALND{\alpha}{B}{w}(\IMode{N'},\IMode{N'})
         }{
           \only<14->{\checkmark}
         }
