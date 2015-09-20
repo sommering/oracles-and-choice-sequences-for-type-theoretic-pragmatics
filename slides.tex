@@ -384,7 +384,7 @@
   \begin{remark}
     Contra Dummett, I \emph{by no means} take the above as requiring that the following shall be true in a constructive metatheory, \alert{divorced from time}:
     \[
-      \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}} \lor \lnot \SemBrackets{\Force{w}{\IMode{\mathcal{J}}}}\tag{Dummett's infelicity}
+      \forall\IMode{w}.\forall\IMode{\mathcal{J}}.\ (\Force{w}{\IMode{\mathcal{J}}}) \lor \lnot (\Force{w}{\IMode{\mathcal{J}}})\tag{Dummett's infelicity}
     \]
     The above is impossible in a Beth model.
   \end{remark}
@@ -588,9 +588,9 @@
 
 \begin{frame}{spreads: sets of choice sequences}
 
-  A spread $\Spw$ is a restriction on choice sequences which is defined by a
-  condition on their finite approximations (prefixes, \alert{neighborhoods}),
-  subject to the following laws:\pause
+  A spread direction $\Spw$ is a restriction on choice sequences which is
+  defined by a condition on their finite approximations (prefixes,
+  \alert{neighborhoods}), subject to the following laws:\pause
 
   \begin{enumerate}[<+->]
     \item the empty neighborhood shall be admitted
@@ -609,7 +609,7 @@
 \end{frame}
 
 \begin{frame}{$\OpRequire$ --- dynamics}
-  A spread for index-choosers:
+  A spread direction for index-choosers:
   \begin{gather*}
     \infer{
       \Lawful{\Nil}
