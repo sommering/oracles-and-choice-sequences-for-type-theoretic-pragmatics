@@ -538,17 +538,17 @@
   }
 \end{frame}
 
-\begin{frame}{intuitionistic truth vs constructive truth}
+\begin{frame}{intuitionistic vs constructive validity}
   \only<2>{
-    a statement is intuitionistically true if it is forced at all nodes
+    a statement is intuitionistically valid if it is forced at all nodes
   }
 
   \only<3->{
-    \sout{a statement is intuitionistically true if it is forced at all nodes}
+    \sout{a statement is intuitionistically valid if it is forced at all nodes}
   }
 
   \only<4->{
-    \alert{a statement is constructively true if it is forced at all nodes}
+    \alert{a statement is constructively valid if it is forced at all nodes}
   }
 
   \bigskip
@@ -729,7 +729,7 @@
     }{
     }\qquad
     \infer[\mathcal{E}]{
-      \Force{w}{\Seq{x:A}{\Member{N}{B}}}
+      \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
     }{
       \only<5->{
         \infer{
