@@ -80,6 +80,7 @@
 \newcommand\IsTypeND[2]{\IMode{#2}\ \text{\rmfamily\itshape type}_{#1}}
 \newcommand\EqType[2]{\IMode{#1}=\IMode{#2}\ \text{\rmfamily\itshape type}}
 \newcommand\IsTrue[1]{\IMode{#1}\ \text{\rmfamily\itshape true}}
+\newcommand\IsTrueND[2]{\IMode{#2}\ \text{\rmfamily\itshape true}_{#1}}
 \newcommand\IsVer[1]{\IMode{#1}\ \text{\rmfamily\itshape verif}}
 \newcommand\OpSig[2]{\IMode{#1} : \OMode{#2}}
 \newcommand\NotationDef[2]{\IMode{#1} \eqdef \OMode{#2}}
@@ -705,7 +706,7 @@
       \infer[\textit{require}]{
         \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
       }{
-        \Force{w}{\IsTrue{A}} &
+        \Force{w}{\IsTrueND{\alpha}{A}} &
         \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
       }
     \]
@@ -717,7 +718,7 @@
     \infer[\textit{require}]{
       \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
     }{
-      \Force{w}{\IsTrue{A}} &
+      \Force{w}{\IsTrueND{\alpha}{A}} &
       \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
     }
   \]
@@ -726,7 +727,7 @@
 \begin{frame}
   \begin{gather*}
     \infer[\mathcal{D}]{
-      \Force{w}{\IsTrue{A}}
+      \Force{w}{\IsTrueND{\alpha}{A}}
     }{
     }\qquad
     \infer[\mathcal{E}]{
@@ -787,7 +788,7 @@
             }{
               \only<9->{
                 \infer[\mathcal{D}]{
-                  \Force{w}{\IsTrue{A}}
+                  \Force{w}{\IsTrueND{\alpha}{A}}
                 }{
                   \checkmark
                 }
@@ -809,7 +810,7 @@
           \only<3->{
             \infer{\Force{w}{\Choose{\alpha}{\BKS{A}}{M}}}{
               \only<4->{
-                \infer[\mathcal{D}]{\Force{w}{\IsTrue{A}}}{\checkmark}
+                \infer[\mathcal{D}]{\Force{w}{\IsTrueND{\alpha}{A}}}{\checkmark}
               }
             }&
             \infer[\only<13->{\mathcal{G}}]{
