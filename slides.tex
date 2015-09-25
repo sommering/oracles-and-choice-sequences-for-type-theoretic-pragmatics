@@ -421,26 +421,25 @@
   }
 \end{frame}
 
-\begin{frame}{intuitionistic vs constructive validity}
- \only<2>{
-    a statement is intuitionistically valid if it is forced at all nodes
-  }
-
-  \only<3->{
-    \sout{a statement is intuitionistically valid if it is forced at all nodes}
-  }
-
-  \only<4->{
-    \alert{a statement is constructively valid if it is forced at all nodes}
-  }
-
-  \bigskip
-
-  \only<5->{
-    Intuitionism subsumes constructivism, but goes much further by allowing the observation of non-constructive objects (Fourman)
-  }
-\end{frame}
-
+%%% \begin{frame}{intuitionistic vs constructive validity}
+%%%  \only<2>{
+%%%     a statement is intuitionistically valid if it is forced at all nodes
+%%%   }
+%%%
+%%%   \only<3->{
+%%%     \sout{a statement is intuitionistically valid if it is forced at all nodes}
+%%%   }
+%%%
+%%%   \only<4->{
+%%%     \alert{a statement is constructively valid if it is forced at all nodes}
+%%%   }
+%%%
+%%%   \bigskip
+%%%
+%%%   \only<5->{
+%%%     Intuitionism subsumes constructivism, but goes much further by allowing the observation of non-constructive objects (Fourman)
+%%%   }
+%%% \end{frame}
 
 \begin{frame}{the meaning of a proposition}
   The meaning of a proposition/type is an intensional (world-indexed)
@@ -523,8 +522,6 @@
   }
 \end{frame}
 
-\section{the $\OpRequire$ oracle: dynamics}
-
 \begin{frame}{choice sequences and the creating subject}
 
   choice sequences (streams of objects) may be propounded over time based on
@@ -598,6 +595,8 @@
 
 
 \end{frame}
+
+\section{the $\OpRequire$ oracle: dynamics}
 
 \begin{frame}{a conservative extension of type theory}
   A spread direction for index-choosers:
@@ -777,7 +776,7 @@
               }
             }&
             \infer[\only<13->{\mathcal{G}}]{
-              \EvalND{\alpha}{[M/x]N}{N'}
+              \Force{w}{\EvalND{\alpha}{[M/x]N}{N'}}
             }{
               \only<13->{\checkmark}
             }
