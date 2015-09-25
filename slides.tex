@@ -623,42 +623,67 @@
 
   Reformulate type theory relative to an arbitrary $\Member{\alpha}{\Spw}$! For instance:
 
-  \[
-    \infer={
-      \Force{w}{\EqMemberND{\alpha}{M}{N}{A}}
-    }{
-      \Force{w}{\EvalND{\alpha}{M}{M'}} &
-      \Force{w}{\EvalND{\alpha}{N}{N'}} &
-      \VALND{\alpha}{A}{w}(\IMode{M'},\IMode{N'})
-    }
-  \]
+  \only<2>{
+    \[
+      \infer={
+        \Force{w}{\EqMemberND{\alpha}{M}{N}{A}}
+      }{
+        \Force{w}{\EvalND{\alpha}{M}{M'}} &
+        \Force{w}{\EvalND{\alpha}{N}{N'}} &
+        \VALND{\alpha}{A}{w}(\IMode{M'},\IMode{N'})
+      }
+    \]
+  }
+  \only<3>{
+    \[
+      \infer={
+        \EqMemberND{\alpha}{M}{N}{A}
+      }{
+        \EvalND{\alpha}{M}{M'} &
+        \EvalND{\alpha}{N}{N'} &
+        \VALND{\alpha}{A}{}(\IMode{M'},\IMode{N'})
+      }
+    \]
+  }
 \end{frame}
 
 \begin{frame}{$\OpRequire$ --- dynamics}
   Deterministic choice for $\BKS{A}$:
-  \[
-    \infer{
-      \Force{w}{\Choose{\alpha}{\BKS{A}}{M}}
-    }{
-      \Force{w}{\EvalND{\alpha}{A}{A'}} &
-      \Match{\Size{\BKS{A'}(w)}}{\ell} &
-      \Match{\Head{\alpha}(\ell)}{i} &
-      \Match{\BKS{A'}(w)(i)}{M}
-    }
-  \]
-  \pause
-
-  Deterministic dynamics for $\OpRequire$:
-  \[
-    \infer{
-      \Force{w}{\EvalND{\alpha}{\Require{A}{x}{N}}{N'}}
-    }{
-      \Force{w}{\Choose{\alpha}{\BKS{A}}{M}} &
-      \Force{w}{
-        \EvalND{\Tail{\alpha}}{[M/x]N}{N'}
+  \only<1>{
+    \[
+      \infer{
+        \Force{w}{\Choose{\alpha}{\BKS{A}}{M}}
+      }{
+        \Force{w}{\EvalND{\alpha}{A}{A'}} &
+        \Match{\Size{\BKS{A'}(w)}}{\ell} &
+        \Match{\Head{\alpha}(\ell)}{i} &
+        \Match{\BKS{A'}(w)(i)}{M}
       }
-    }\tag{for $\Member{\alpha}{\Spw}$}
-  \]
+    \]
+  }
+  \only<2->{
+    \[
+      \infer{
+        \Choose{\alpha}{\BKS{A}}{M}
+      }{
+        \EvalND{\alpha}{A}{A'} &
+        \Match{\Size{\BKS{A'}}}{\ell} &
+        \Match{\Head{\alpha}(\ell)}{i} &
+        \Match{\BKS{A'}(i)}{M}
+      }
+    \]
+  }
+  \only<3->{
+    Deterministic dynamics for $\OpRequire$:
+    \[
+      \infer{
+        \EvalND{\alpha}{\Require{A}{x}{N}}{N'}
+      }{
+        \Choose{\alpha}{\BKS{A}}{M} &
+        \EvalND{\Tail{\alpha}}{[M/x]N}{N'}
+      }\tag{for $\Member{\alpha}{\Spw}$}
+    \]
+  }
 \end{frame}
 
 \begin{frame}{validity of the require rule}
@@ -666,10 +691,10 @@
     The following rule is valid in our semantics:
     \[
       \infer[\textit{require}]{
-        \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
+        \MemberND{\alpha}{\Require{A}{x}{N}}{B}
       }{
-        \Force{w}{\IsTrueND{\alpha}{A}} &
-        \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
+        \IsTrueND{\alpha}{A} &
+        \SeqND{\alpha}{x:A}{\Member{N}{B}}
       }
     \]
   \end{theorem}
@@ -678,10 +703,10 @@
 \begin{frame}
   \[
     \infer[\textit{require}]{
-      \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
+      \MemberND{\alpha}{\Require{A}{x}{N}}{B}
     }{
-      \Force{w}{\IsTrueND{\alpha}{A}} &
-      \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
+      \IsTrueND{\alpha}{A} &
+      \SeqND{\alpha}{x:A}{\Member{N}{B}}
     }
   \]
 \end{frame}
@@ -689,68 +714,60 @@
 \begin{frame}
   \begin{gather*}
     \infer[\mathcal{D}]{
-      \Force{w}{\IsTrueND{\alpha}{A}}
+      \IsTrueND{\alpha}{A}
     }{
     }\qquad
     \infer[\mathcal{E}]{
-      \Force{w}{\SeqND{\alpha}{x:A}{\Member{N}{B}}}
+      \SeqND{\alpha}{x:A}{\Member{N}{B}}
     }{
       \only<5->{
-        \infer{
-          \Force{w}{
-            \GenJ{y,z}{
-              \HypJ{
-                \EqMemberND{\alpha}{[y/x]N}{[z/x]N}{B}
-              }{
-                \EqMemberND{\alpha}{y}{z}{A}
-              }
+        \infer[\mathcal{F}]{
+          \GenJ{y,z}{
+            \HypJ{
+              \EqMemberND{\alpha}{[y/x]N}{[z/x]N}{B}
+            }{
+              \EqMemberND{\alpha}{y}{z}{A}
             }
           }
         }{
-          \only<6->{
-            \infer[\mathcal{F}]{
-              \scriptstyle\forall\IMode{u}\succeq\IMode{w}.\forall\Member{y,z}{\Domain{u}}.\ \Force{u}{\EqMemberND{\alpha}{y}{z}{A}} \ \Rightarrow\ \Force{u}{\EqMemberND{\alpha}{[y/x]N}{[z/x]N}{B}}
-            }{
-            }
-          }
         }
       }
     }\\[6pt]
-    \only<7->{
+    \only<6->{
       \infer{
-        \only<10>{\Force{w}{\MemberND{\alpha}{[M/x]N}{B}}}
-        \only<11->{
+        \only<9>{\MemberND{\alpha}{[M/x]N}{B}}
+        \only<10->{
           \infer{
-            \Force{w}{\MemberND{\alpha}{[M/x]N}{B}}
+            \MemberND{\alpha}{[M/x]N}{B}
           }{
-            \only<12->{
+            \only<11->{
               \infer[\mathcal{G}]{
-                \Force{w}{\EvalND{\alpha}{[M/x]N}{N'}}
+                \EvalND{\alpha}{[M/x]N}{N'}
               }{
               } &
               \infer[\mathcal{H}]{
-                \VALND{\alpha}{B}{w}(\IMode{N'},\IMode{N'})
+                \VALND{\alpha}{B}{}(\IMode{N'},\IMode{N'})
               }{
               }
             }
           }
         }
       }{
-        \infer[\mathcal{F}(w,M,M)]{
-          \Force{w}{\MemberND{\alpha}{M}{A}} \Rightarrow \Force{w}{\MemberND{\alpha}{[M/x]N}{B}}
+        \infer[\mathcal{F}(M,M)]{
+          \HypJ{\MemberND{\alpha}{[M/x]N}{B}}{\MemberND{\alpha}{M}{A}}
         }{
           \checkmark
         }&
         \infer{
-          \Force{w}{\MemberND{\alpha}{M}{A}}
+          \MemberND{\alpha}{M}{A}
         }{
-          \only<8->{
+          \only<7->{
             \infer{
-              \Force{w}{\Choose{\alpha}{\BKS{A}}{M}}
+              \Choose{\alpha}{\BKS{A}}{M}
             }{
-              \only<9->{
+              \only<8->{
                 \infer[\mathcal{D}]{
-                  \Force{w}{\IsTrueND{\alpha}{A}}
+                  \IsTrueND{\alpha}{A}
                 }{
                   \checkmark
                 }
@@ -763,34 +780,34 @@
   \end{gather*}
   \begin{gather*}
     \infer[\textit{require}]{
-      \Force{w}{\MemberND{\alpha}{\Require{A}{x}{N}}{B}}
+      \MemberND{\alpha}{\Require{A}{x}{N}}{B}
     }{
       \only<2->{
         \infer{
-          \Force{w}{\EvalND{\alpha}{\Require{A}{x}{N}}{N'}}
+          \EvalND{\alpha}{\Require{A}{x}{N}}{N'}
         }{
           \only<3->{
-            \infer{\Force{w}{\Choose{\alpha}{\BKS{A}}{M}}}{
+            \infer{\Choose{\alpha}{\BKS{A}}{M}}{
               \only<4->{
-                \infer[\mathcal{D}]{\Force{w}{\IsTrueND{\alpha}{A}}}{\checkmark}
+                \infer[\mathcal{D}]{\IsTrueND{\alpha}{A}}{\checkmark}
               }
             }&
-            \infer[\only<13->{\mathcal{G}}]{
-              \Force{w}{\EvalND{\alpha}{[M/x]N}{N'}}
+            \infer[\only<12->{\mathcal{G}}]{
+              \EvalND{\alpha}{[M/x]N}{N'}
             }{
-              \only<13->{\checkmark}
+              \only<12->{\checkmark}
             }
           }
         }&
-        \infer[\only<14->{\mathcal{H}}]{
-          \VALND{\alpha}{B}{w}(\IMode{N'},\IMode{N'})
+        \infer[\only<13->{\mathcal{H}}]{
+          \VALND{\alpha}{B}{}(\IMode{N'},\IMode{N'})
         }{
-          \only<14->{\checkmark}
+          \only<13->{\checkmark}
         }
       }
     }
   \end{gather*}
-  \only<15->{\qed}
+  \only<14->{\qed}
 \end{frame}
 
 \plain{Questions?}
