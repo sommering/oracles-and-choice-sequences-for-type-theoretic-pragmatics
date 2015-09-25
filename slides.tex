@@ -171,23 +171,6 @@
   \]
 \end{frame}
 
-\begin{frame}{the ``donkey sentence''}
-  \[
-    \VertSem{Every farmer who owns a donkey beats it.}{
-      \TyFun{
-        \TyProd{Farmer}{x}{
-          \TyProd{Donkey}{y}{
-            Owns(x;y)
-          }
-        }
-      }{p}{
-        \pause
-        Beats(\only<2>{???;???}\only<3>{\Proj{1}(p);\Proj{1}(\Proj{2}(p))})
-      }
-    }
-  \]
-\end{frame}
-
 \begin{frame}{two things to deal with}
   \pause
   \begin{itemize}[<+->]
