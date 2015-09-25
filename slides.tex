@@ -171,14 +171,6 @@
   \]
 \end{frame}
 
-\begin{frame}{two things to deal with}
-  \pause
-  \begin{itemize}[<+->]
-    \item \alert<4-5>{terms for presuppositions}\only<5>{ (this talk)}
-    \item resolution of presuppositions
-  \end{itemize}
-\end{frame}
-
 \section{the $\OpRequire$ oracle: statics}
 
 \begin{frame}{$\OpRequire$ --- formal rules}
@@ -236,15 +228,11 @@
     \centering
     \framebox{
       where
-      $\IMode{M\sim N} \eqdef
-       \OMode{(M\preceq N)\land(N\preceq M)}$
+      $\IMode{M}\sim \IMode{N} \eqdef
+      (\IMode{M}\preceq\IMode{N}) \mathbin{\&}
+      (\IMode{N}\preceq\IMode{M})$
     }
   }
-\end{frame}
-
-\begin{frame}{Every grammatical sentence has a meaning}
-  \pause
-  ...but only some of them denote propositions (types)!
 \end{frame}
 
 \begin{frame}{$\OpRequire$---na\"ive dynamics}
@@ -258,15 +246,7 @@
     }\tag{??}
   \]
   \pause
-
-  Can the above be made precise? \pause \alert{There are two problems:}\pause
-  \begin{enumerate}[<+->]
-    \item circularity
-    \item non-determinism
-  \end{enumerate}
 \end{frame}
-
-\plain{(hold that thought)}
 
 \begin{frame}{a positive example}
   \pause
