@@ -237,7 +237,6 @@
 \end{frame}
 
 \begin{frame}{$\OpRequire$---na\"ive dynamics}
-
   \[
     \infer{
       \Eval{\Require{A}{x}{N}}{N'}
@@ -246,7 +245,6 @@
       \Eval{\left[M/x\right]N}{N'}
     }\tag{??}
   \]
-  \pause
 \end{frame}
 
 \begin{frame}{a positive example}
@@ -266,15 +264,15 @@
 \end{frame}
 
 \begin{frame}{a positive example}
-  \pause
   \[
     \VertEval{
       \Require{President}{x}{
         \TyProd{Marathon}{y}{
           Ran(x;y)
         }
-      }\pause
+      }
     }{
+      \pause
       \TyProd{Marathon}{y}{
         Ran(Obama;y)
       }
