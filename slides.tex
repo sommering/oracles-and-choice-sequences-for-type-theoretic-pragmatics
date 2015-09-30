@@ -172,6 +172,18 @@
   \]
 \end{frame}
 
+\begin{frame}{introducing $\OpRequire$}
+  \[
+    \VertSem{A woman walked in. She sat down}{
+      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{
+        \only<1>{SatDown(???)}%
+        \only<2>{\Require{Woman}{y}{SatDown(y)}}%
+      }
+    }
+  \]
+\end{frame}
+
+
 \section{the $\OpRequire$ oracle: statics}
 
 \begin{frame}{$\OpRequire$ --- formal rules}
@@ -189,17 +201,6 @@
       \Seq{\Gamma}{\Member{M}{A}} &
       \Seq{\Gamma,x:A}{\Member{N}{B}}
     }\tag{\textit{require}}
-  \]
-\end{frame}
-
-\begin{frame}{$\OpRequire$ --- examples}
-  \[
-    \VertSem{A woman walked in. She sat down}{
-      \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{
-        \only<1>{SatDown(???)}%
-        \only<2>{\Require{Woman}{y}{SatDown(y)}}%
-      }
-    }
   \]
 \end{frame}
 
