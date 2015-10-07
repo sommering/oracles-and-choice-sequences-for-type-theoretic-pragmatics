@@ -136,16 +136,7 @@
   \[
     \VertSem{A woman walked in.}{
       \pause
-      \TyProd{Woman}{p}{\pause WalkedIn(p)}
-    }
-  \]
-\end{frame}
-
-\begin{frame}{natural language semantics and anaphora}
-  \[
-    \VertSem{She sat down}{
-      \pause
-      SatDown(???)
+      \TyProd{Woman}{p}{WalkedIn(p)}
     }
   \]
 \end{frame}
@@ -155,7 +146,6 @@
     \VertSem{A woman walked in. She sat down}{
       \pause
       \TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{
-        \pause
         SatDown(???)
       }
     }
@@ -214,7 +204,7 @@
 
   \only<3->{
     \alert<4->{The meaning of a sentence is a type-theoretic expression which may
-    \emph{evaluate} to a canonical proposition.}
+    \emph{compute} to a canonical proposition.}
   }
 
   \only<5->{
@@ -224,16 +214,6 @@
       \sim\\
       \IMode{\TyProd{\TyProd{Woman}{p}{WalkedIn(p)}}{x}{SatDown(\Proj{1}(x))}}
     \end{gather*}
-  }
-
-  \only<6->{
-    \centering
-    \framebox{
-      where
-      $\IMode{M}\sim \IMode{N} \eqdef
-      (\IMode{M}\preceq\IMode{N}) \mathbin{\&}
-      (\IMode{N}\preceq\IMode{M})$
-    }
   }
 \end{frame}
 
@@ -412,38 +392,26 @@
     \begin{alignat*}{3}
       \ForceAlign{w}{\GenJ{x}{\mathcal{J}(x)}}%
         &\Longleftrightarrow \ \ \ &
-        \only<2>{\OMode{\cdots}}
-        \only<3->{\forall \IMode{u}\succeq\IMode{w}.\forall\Member{x}{\Domain{u}}.\ \IMode{u}\Vdash\mathcal{J}(x)}\\
+        \forall \IMode{u}\succeq\IMode{w}.\forall\Member{x}{\Domain{u}}.\ \IMode{u}\Vdash\mathcal{J}(x)\\
       \IMode{w}&\Vdash\HypJ{\mathcal{J}_2}{\mathcal{J}_1}\ \ \ %
          &\Longleftrightarrow \ \ \ &
-         \only<2>{\OMode{\cdots}}
-         \only<3->{\forall \IMode{u}\succeq\IMode{w}.\ \IMode{u}\Vdash\mathcal{J}_1\Rightarrow\IMode{u}\Vdash\mathcal{J}_2}
+         \forall \IMode{u}\succeq\IMode{w}.\ \IMode{u}\Vdash\mathcal{J}_1\Rightarrow\IMode{u}\Vdash\mathcal{J}_2
     \end{alignat*}
   }
-  \only<4->{%
-    where $\Domain{w}$ is the species of constructions that have been effected by stage $w$
+  \only<3->{%
+    where $\Domain{}$ is the (pre)sheaf of constructions that have been effected so far
   }
 \end{frame}
 
-%%% \begin{frame}{intuitionistic vs constructive validity}
-%%%  \only<2>{
-%%%     a statement is intuitionistically valid if it is forced at all nodes
-%%%   }
-%%%
-%%%   \only<3->{
-%%%     \sout{a statement is intuitionistically valid if it is forced at all nodes}
-%%%   }
-%%%
-%%%   \only<4->{
-%%%     \alert{a statement is constructively valid if it is forced at all nodes}
-%%%   }
-%%%
-%%%   \bigskip
-%%%
-%%%   \only<5->{
-%%%     Intuitionism subsumes constructivism, but goes much further by allowing the observation of non-constructive objects (Fourman)
-%%%   }
-%%% \end{frame}
+\begin{frame}{intuitionistic vs constructive validity}
+  \alert{a statement is constructively valid if it is forced at all nodes}
+
+  \bigskip\pause
+
+  \only<5->{
+    Intuitionism subsumes constructivism, but goes much further by allowing the observation of non-constructive objects \textbf{(Fourman)}
+  }
+\end{frame}
 
 \begin{frame}{the meaning of a proposition}
   The meaning of a proposition/type is an intensional (world-indexed)
