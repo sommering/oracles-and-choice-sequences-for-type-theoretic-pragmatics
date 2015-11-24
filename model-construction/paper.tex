@@ -84,7 +84,7 @@ list of terms which have been recognized as canonical types so far, and
 $\WitnessesOf{w}{A}$ is the finite list of witnesses of the truth of $A$ that
 have been constructed so far, for each $A$ in $\Types{w}$. In other words, the
 set of worlds $\Worlds$ is defined as follows, where for any set $S$, the
-functor $\Ext{-} : \List{S}\to\SETS$ takes a list to its extension as a set.
+operator $\Ext{-} : \List{S}\to\SETS$ takes a list to its extension as a set.
 \[
   \Worlds
     \triangleq
@@ -95,15 +95,15 @@ functor $\Ext{-} : \List{S}\to\SETS$ takes a list to its extension as a set.
 
 Let $\Dom{w}$ be the domain of discourse $\Term{\Psi{w}}$. The accessibility
 relation $\preceq$ is defined as follows:
-\begin{align*}
-  \PrecEq{u}{v}
-   &\triangleq
-    \PrecEq{\Sig{u}}{\Sig{v}}\\
-     &\mathrel\land
-      \SubsetEq{\Types{u}}{\Types{v}}\\
-       &\mathrel\land
-        \forall\Member{A}{\Types{u}}.\ \SubsetEq{\WitnessesOf{u}{A}}{\WitnessesOf{v}{A}}
-\end{align*}
+\[
+  \infer={
+    \PrecEq{u}{v}
+  }{
+    \PrecEq{\Sig{u}}{\Sig{v}} &
+    \SubsetEq{\Ext{\Types{u}}}{\Ext{\Types{v}}} &
+    \forall\Member{A}{\Types{u}}.\ \SubsetEq{\WitnessesOf{u}{A}}{\WitnessesOf{v}{A}}
+  }
+\]
 
 \begin{thm}
   $\Pair{\Worlds}{\preceq}$ is a Kripke frame.
@@ -149,7 +149,8 @@ evaluate in the following way:
   \infer{
     \Force{w}{\Eval{\alpha}{\Require{A}{x}{N}}{N'}}
   }{
-    \IMode{\Witnesses{w}}\ni_\IMode{\mathsf{hd}(\alpha)}\OMode{M} &
+    \Eval{\alpha}{A}{A'} &
+    \IMode{\Witnesses{w}A'}\ni_\IMode{\mathsf{hd}(\alpha)}\OMode{M} &
     \Eval{\mathsf{tl}(\alpha)}{[M/x]N}{N'}
   }
 \end{gather*}
@@ -179,9 +180,10 @@ judgment, $\Force{w}{\IsWorld{u}{\alpha}}$ (presupposing $\SuccEq{u}{w}$):
   }{
     \begin{array}{l}
       \forall\SuccEq{u}{w}.\ \forall\Member{M,N}{\Dom{u}}.\\
-      \Force{w}{\IsWorld{u}{\alpha}} \mathrel\land
-      \Force{u}{\IsExpStar{\alpha}{A}{M}{N}} \Rightarrow
-      \Force{u}{\IsExpStar{\alpha}{[M/x]B}{[M/x]E}{[N/y]F}}
+      \quad\Force{w}{\IsWorld{u}{\alpha}}\\
+      %%% TODO: should we require M,N in K_w(A)?
+      \quad\Force{u}{\IsExpStar{\alpha}{A}{M}{N}} \Rightarrow
+            \Force{u}{\IsExpStar{\alpha}{[M/x]B}{[M/x]E}{[N/y]F}}
     \end{array}
   }\\[6pt]
   \infer{
